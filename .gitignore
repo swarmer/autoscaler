@@ -63,3 +63,6 @@ target/
 
 .DS_Store
 .idea/
+
+env3/
+config.yaml
