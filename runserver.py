@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from autoscaler.server.cli import main
 
 
