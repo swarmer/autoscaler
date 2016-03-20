@@ -38,4 +38,5 @@ def run_listener(history, listen_host, listen_port):
         (listen_host, listen_port),
         ListenerUdpHandler
     )
+    logging.info('Starting listener on %s:%s', listen_host, listen_port)
     server.serve_forever()
