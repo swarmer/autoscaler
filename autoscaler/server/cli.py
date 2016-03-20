@@ -40,11 +40,15 @@ def main():
     settings = setup()
 
     request_history = RequestHistory()
-    run_listener(
-        request_history,
-        settings['listen_host'],
-        settings['listen_port']
-    )
+    try:
+        run_listener(
+            request_history,
+            settings['listen_host'],
+            settings['listen_port']
+        )
+    except KeyboardInterrupt:
+        logging.info('Exiting')
+        pass
 
 
 if __name__ == '__main__':
