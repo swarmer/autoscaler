@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 import yaml
 
@@ -6,7 +7,15 @@ from .request_history import RequestHistory
 from .listener import run_listener
 
 
-def main():
+def configure_logging(log_level_str):
+    log_level = getattr(logging, log_level_str.upper())
+    logging.basicConfig(
+        format='[%(levelname)s %(asctime)s] %(message)s',
+        level=log_level_str,
+    )
+
+
+def setup():
     parser = argparse.ArgumentParser(description='Autoscaling server')
     parser.add_argument(
         '--config',
@@ -22,8 +31,15 @@ def main():
     finally:
         config_file.close()
 
-    request_history = RequestHistory()
+    configure_logging(settings['log_level'])
 
+    return settings
+
+
+def main():
+    settings = setup()
+
+    request_history = RequestHistory()
     run_listener(
         request_history,
         settings['listen_host'],
