@@ -3,7 +3,13 @@ log_level: INFO
 listen_host: 0.0.0.0
 listen_port: 8740
 
-kubernetes_api_host: 127.0.0.1
-kubernetes_api_port: 6443
-
 scaling_interval: 30s
+
+scaling_algorithm:
+    algorithm_class: autoscaler.server.scaling.algorithms.linear.LinearScalingAlgorithm
+    requests_per_instance_interval: 10
+
+cluster_adapter:
+    adapter_class: autoscaler.server.scaling.cluster_adapters.kubernetes.KubernetesClusterAdapter
+    kubernetes_api_host: 127.0.0.1
+    kubernetes_api_port: 6443

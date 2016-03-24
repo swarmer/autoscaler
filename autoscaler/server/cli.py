@@ -5,13 +5,15 @@ import yaml
 
 from .request_history import RequestHistory
 from .listener import run_listener
+from .scaling.rescaler import Rescaler
+from .scaling.utils import get_algorithm, get_cluster_adapter, parse_interval
 
 
 def configure_logging(log_level_str):
     log_level = getattr(logging, log_level_str.upper())
     logging.basicConfig(
         format='[%(levelname)s %(asctime)s] %(message)s',
-        level=log_level_str,
+        level=log_level,
     )
 
 
@@ -40,6 +42,17 @@ def main():
     settings = setup()
 
     request_history = RequestHistory()
+
+    scaling_algorithm = get_algorithm(settings)
+    cluster_adapter = get_cluster_adapter(settings)
+    scaler = Rescaler(
+        request_history,
+        scaling_algorithm,
+        cluster_adapter,
+        parse_interval(settings['scaling_interval']),
+    )
+    scaler.start()
+
     try:
         run_listener(
             request_history,
@@ -48,7 +61,7 @@ def main():
         )
     except KeyboardInterrupt:
         logging.info('Exiting')
-        pass
+        scaler.stop()
 
 
 if __name__ == '__main__':
