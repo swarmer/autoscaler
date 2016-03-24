@@ -27,15 +27,19 @@ class Rescaler:
             'Running periodic rescaling every %d seconds',
             self.interval_seconds
         )
-        while True:
-            self.rescale()
 
-            with self.exit_condition:
-                exit = self.exit_condition.wait(
-                    timeout=self.interval_seconds
-                )
-            if exit:
-                break
+        try:
+            while True:
+                self.rescale()
+
+                with self.exit_condition:
+                    exit = self.exit_condition.wait(
+                        timeout=self.interval_seconds
+                    )
+                if exit:
+                    break
+        except Exception as e:
+            logging.error('Exception: %s', str(e))
 
     def start(self):
         thread = threading.Thread(target=self.run)
