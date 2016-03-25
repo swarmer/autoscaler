@@ -18,7 +18,7 @@ class KubernetesClusterAdapter:
                 'name': self.rc_name,
             },
             'spec': {
-                'replicas': 2,
+                'replicas': instance_count,
             }
         }
 
