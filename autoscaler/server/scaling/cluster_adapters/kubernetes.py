@@ -7,15 +7,21 @@ class KubernetesClusterAdapter:
         self.api_host = cluster_config['kubernetes_api_host']
         self.user = cluster_config['kubernetes_user']
         self.password = cluster_config['kubernetes_password']
-        self.rc_name = cluster_config['kubernetes_rc_name']
+        self.deployment = cluster_config['kubernetes_deployment']
+        self.namespace = cluster_config['kubernetes_namespace']
 
     def scale(self, instance_count):
-        scale_url = 'https://%s/api/v1/namespaces/default' \
-                    '/replicationcontrollers/hello/scale' % self.api_host
+        scale_url = (
+            'https://{api_host}/apis/extensions/v1beta1/namespaces/{namespace}' \
+            'deployments/{deployment}/scale'
+        ).format(
+            api_host=self.api_host, deployment=self.deployment, namespace=self.namespace
+        )
+
         data = {
             'metadata': {
-                'namespace': 'default',
-                'name': self.rc_name,
+                'namespace': self.namespace,
+                'name': self.deployment,
             },
             'spec': {
                 'replicas': instance_count,
