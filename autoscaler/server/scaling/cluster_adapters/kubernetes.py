@@ -12,7 +12,7 @@ class KubernetesClusterAdapter:
 
     def scale(self, instance_count):
         scale_url = (
-            'https://{api_host}/apis/extensions/v1beta1/namespaces/{namespace}' \
+            'https://{api_host}/apis/extensions/v1beta1/namespaces/{namespace}'
             '/deployments/{deployment}/scale'
         ).format(
             api_host=self.api_host, deployment=self.deployment, namespace=self.namespace

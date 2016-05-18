@@ -16,7 +16,6 @@ class Rescaler:
     def rescale(self):
         instance_count = self.algorithm.get_instance_count(
             self.request_history,
-            self.interval_seconds
         )
 
         logging.info('Scaling cluster to %d instances', instance_count)
