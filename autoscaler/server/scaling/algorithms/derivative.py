@@ -18,7 +18,9 @@ class DerivativeScalingAlgorithm:
             self.interval_seconds, 2
         )
 
-        expected_request_count = interval2 + (interval2 - interval1)
+        expected_request_count = (
+            len(interval2) + (len(interval2) - len(interval1))
+        )
         return max(1, math.ceil(
             expected_request_count / self.requests_per_instance_interval)
         )
