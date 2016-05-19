@@ -1,3 +1,5 @@
+import math
+
 from autoscaler.server.request_history import RequestHistory
 from autoscaler.server.scaling.utils import parse_interval
 
@@ -12,5 +14,9 @@ class LinearScalingAlgorithm:
         )
 
     def get_instance_count(self, request_history: RequestHistory):
-        requests = request_history.get_last_requests(self.interval_seconds)
-        return max(1, len(requests) // self.requests_per_instance_interval)
+        (interval,) = request_history.get_last_intervals(
+            self.interval_seconds, 1
+        )
+        return max(1, math.ceil(
+            len(interval) / self.requests_per_instance_interval)
+        )
