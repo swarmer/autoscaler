@@ -5,7 +5,7 @@ from autoscaler.server.scaling.utils import parse_interval
 class LinearScalingAlgorithm:
     def __init__(self, algorithm_config):
         self.interval_seconds = parse_interval(
-            algorithm_config['interval_seconds']
+            algorithm_config['interval']
         )
         self.requests_per_instance_interval = (
             algorithm_config['requests_per_instance_interval']

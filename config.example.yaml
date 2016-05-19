@@ -7,7 +7,7 @@ scaling_interval: 30s
 
 scaling_algorithm:
     algorithm_class: autoscaler.server.scaling.algorithms.linear.LinearScalingAlgorithm
-    interval_seconds: 10s
+    interval: 10s
     requests_per_instance_interval: 10
 
 cluster_adapter:
