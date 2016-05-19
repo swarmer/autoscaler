@@ -22,8 +22,8 @@ class SplineScalingAlgorithm:
 
         x_values = [1, 2, 3]
         y_values = [len(interval1), len(interval2), len(interval3)]
-        interpolated_function = scipy.interpolate.interp1d(
-            x_values, y_values, kind='quadratic'
+        interpolated_function = scipy.interpolate.InterpolatedUnivariateSpline(
+            x_values, y_values, k=2,
         )
 
         expected_request_count = interpolated_function(len(x_values) + 1)
