@@ -23,7 +23,7 @@ class SplineScalingAlgorithm:
         x_values = [1, 2, 3]
         y_values = [len(interval1), len(interval2), len(interval3)]
         interpolated_function = scipy.interpolate.interp1d(
-            x_values, y_values, kind='cubic'
+            x_values, y_values, kind='quadratic'
         )
 
         expected_request_count = interpolated_function(len(x_values) + 1)
