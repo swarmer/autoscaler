@@ -1,0 +1,24 @@
+# linear
+scaling_algorithm:
+    algorithm_class: autoscaler.server.scaling.algorithms.LinearScalingAlgorithm
+    interval: 15s
+    requests_per_instance_interval: 10
+
+# weighted
+scaling_algorithm:
+    algorithm_class: autoscaler.server.scaling.algorithms.WeightedScalingAlgorithm
+    interval: 15s
+    weights: [0.25, 0.75]
+    requests_per_instance_interval: 10
+
+# derivative
+scaling_algorithm:
+    algorithm_class: autoscaler.server.scaling.algorithms.DerivativeScalingAlgorithm
+    interval: 15s
+    requests_per_instance_interval: 10
+
+# spline
+scaling_algorithm:
+    algorithm_class: autoscaler.server.scaling.algorithms.SplineScalingAlgorithm
+    interval: 15s
+    requests_per_instance_interval: 10
