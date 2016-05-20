@@ -1,3 +1,4 @@
+import pickle
 from datetime import datetime, timedelta
 
 from autoscaler.server.request_history import RequestHistory
@@ -24,6 +25,7 @@ REQUEST_GENERATOR_FACTORY = lambda: RandomWalkRequestGenerator(
     starting_rpm=100, quantum_seconds=QUANTUM_SECONDS, walk_speed=10,
     start_datetime=START_DATETIME
 )
+OUTPUT_FILE = 'simulation.pickle'
 
 
 class SimulationRequestHistory(RequestHistory):
@@ -42,6 +44,7 @@ def run():
     quantum_delta = timedelta(seconds=QUANTUM_SECONDS)
 
     scaling_history = []
+    request_volumes = []
     request_generator = REQUEST_GENERATOR_FACTORY()
     request_history = SimulationRequestHistory(START_DATETIME)
     current_timestamp = START_DATETIME
@@ -50,9 +53,9 @@ def run():
     print('Starting simulation...')
     while current_timestamp <= END_DATETIME:
         request_history._current_datetime = current_timestamp
-        request_history.request_timestamps.extend(
-            request_generator.get_new_quantum_requests()
-        )
+        new_requests = request_generator.get_new_quantum_requests()
+        request_volumes.append((current_timestamp, len(new_requests)))
+        request_history.request_timestamps.extend(new_requests)
 
         if seconds_until_scaling < 0:
             instance_count = scaling_algorithm.get_instance_count(
@@ -68,7 +71,9 @@ def run():
             print('Current timestamp: %s' % current_timestamp)
     print('Done')
 
-    print(scaling_history)
+    with open(OUTPUT_FILE, 'wb') as output_file:
+        pickle.dump((request_volumes, scaling_history), output_file)
+    print('Data saved')
 
 
 if __name__ == '__main__':

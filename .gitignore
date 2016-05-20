@@ -66,3 +66,5 @@ target/
 
 env3/
 config.yaml
+
+*.pickle
