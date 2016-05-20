@@ -27,7 +27,7 @@ def main():
     ]
 
     pyplot.plot(request_times, request_counts,
-                label='Request volume', color='r')
+                label='Request volume', color='r', alpha=0.5)
     pyplot.plot(rescale_times, instance_counts,
                 label='Autoscaler output', color='g')
     pyplot.legend(loc='upper right')

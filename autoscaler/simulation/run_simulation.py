@@ -18,9 +18,9 @@ END_DATETIME = datetime(
 SCALING_ALGORITHM_CONFIG = {
     'algorithm_class':
         'autoscaler.server.scaling.algorithms.WeightedScalingAlgorithm',
-    'interval': '60s',
-    'weights': [0.25, 0.75],
-    'requests_per_instance_interval': 2,
+    'interval': '600s',
+    'weights': [0.1, 0.2, 0.7],
+    'requests_per_instance_interval': 20,
 }
 REQUEST_GENERATOR_FACTORY = lambda: RandomWalkRequestGenerator(
     starting_rpm=100, quantum_seconds=QUANTUM_SECONDS, walk_speed=3,
