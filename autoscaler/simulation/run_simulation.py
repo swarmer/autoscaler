@@ -7,8 +7,8 @@ from .request_generators import (
     RandomWalkRequestGenerator
 )
 
-QUANTUM_SECONDS = 5
-SCALING_INTERVAL_SECONDS = 60
+QUANTUM_SECONDS = 30
+SCALING_INTERVAL_SECONDS = 30
 START_DATETIME = datetime(
     year=2000, month=1, day=1, hour=0, minute=0, second=0
 )
@@ -16,13 +16,14 @@ END_DATETIME = datetime(
     year=2000, month=1, day=3, hour=0, minute=0, second=0
 )
 SCALING_ALGORITHM_CONFIG = {
-    'algorithm_class': 'autoscaler.server.scaling.algorithms.WeightedScalingAlgorithm',
+    'algorithm_class':
+        'autoscaler.server.scaling.algorithms.WeightedScalingAlgorithm',
     'interval': '60s',
     'weights': [0.25, 0.75],
-    'requests_per_instance_interval': 1,
+    'requests_per_instance_interval': 2,
 }
 REQUEST_GENERATOR_FACTORY = lambda: RandomWalkRequestGenerator(
-    starting_rpm=100, quantum_seconds=QUANTUM_SECONDS, walk_speed=10,
+    starting_rpm=100, quantum_seconds=QUANTUM_SECONDS, walk_speed=3,
     start_datetime=START_DATETIME
 )
 OUTPUT_FILE = 'simulation.pickle'

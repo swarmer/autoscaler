@@ -13,3 +13,4 @@ simplegeneric==0.8.1
 traitlets==4.2.1
 scipy==0.17.1
 numpy==1.11.0
+matplotlib==1.5.1
