@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from autoscaler.server.request_history import RequestHistory
 from autoscaler.server.scaling.utils import get_algorithm
 from .request_generators import (
-    RandomWalkRequestGenerator
+    RandomWalkRequestGenerator,
+    SpikeRequestGenerator,
 )
 
 QUANTUM_SECONDS = 30
@@ -19,31 +20,35 @@ SCALING_ALGORITHM_CONFIGS = [
     {
         'algorithm_class':
             'autoscaler.server.scaling.algorithms.LinearScalingAlgorithm',
-        'interval': '600s',
-        'requests_per_instance_interval': 20,
+        'interval': '210s',
+        'requests_per_instance_interval': 7,
     },
     {
         'algorithm_class':
             'autoscaler.server.scaling.algorithms.WeightedScalingAlgorithm',
-        'interval': '600s',
+        'interval': '210s',
         'weights': [0.1, 0.2, 0.7],
-        'requests_per_instance_interval': 20,
+        'requests_per_instance_interval': 7,
     },
     {
         'algorithm_class':
             'autoscaler.server.scaling.algorithms.DerivativeScalingAlgorithm',
-        'interval': '600s',
-        'requests_per_instance_interval': 20,
+        'interval': '210s',
+        'requests_per_instance_interval': 7,
     },
     {
         'algorithm_class':
             'autoscaler.server.scaling.algorithms.SplineScalingAlgorithm',
-        'interval': '600s',
-        'requests_per_instance_interval': 20,
+        'interval': '210s',
+        'requests_per_instance_interval': 7,
     },
 ]
-REQUEST_GENERATOR_FACTORY = lambda: RandomWalkRequestGenerator(
-    starting_rpm=100, quantum_seconds=QUANTUM_SECONDS, walk_speed=3,
+# REQUEST_GENERATOR_FACTORY = lambda: RandomWalkRequestGenerator(
+#     starting_rpm=100, quantum_seconds=QUANTUM_SECONDS, walk_speed=3,
+#     start_datetime=START_DATETIME
+# )
+REQUEST_GENERATOR_FACTORY = lambda: SpikeRequestGenerator(
+    constant_rpm=100, quantum_seconds=QUANTUM_SECONDS, max_error=20,
     start_datetime=START_DATETIME
 )
 OUTPUT_FILE = 'simulation.pickle'
