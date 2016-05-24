@@ -82,7 +82,7 @@ def run():
         request_volumes.append((current_timestamp, len(new_requests)))
         request_history.request_timestamps.extend(new_requests)
 
-        if seconds_until_scaling < 0:
+        if seconds_until_scaling <= 0:
             for i, scaling_algorithm in enumerate(scaling_algorithms):
                 instance_count = scaling_algorithm.get_instance_count(
                     request_history

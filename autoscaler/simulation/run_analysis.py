@@ -1,5 +1,6 @@
 import sys
 import pickle
+import statistics
 
 from matplotlib import pyplot
 
@@ -24,9 +25,6 @@ def main():
 
     for color, (algorithm_name, scaling_history) in zip(COLORS,
                                                         sorted(scaling_histories.items())):
-        if not any(name in algorithm_name.lower() for name in ['spline', 'derivative', 'linear']):
-            continue
-
         rescale_times = [
             rescale_time
             for rescale_time, instance_count in scaling_history
@@ -35,10 +33,29 @@ def main():
             instance_count
             for rescale_time, instance_count in scaling_history
         ]
+
+        diffs = []
+        overs = []
+        unders = []
+        changes = []
+        for i, (req_count, inst_count) in enumerate(zip(request_counts[1:], instance_counts)):
+            diffs.append(abs(inst_count - req_count))
+            overs.append(inst_count - req_count if inst_count > req_count else 0)
+            unders.append(req_count - inst_count if req_count > inst_count else 0)
+            if i != 0:
+                changes.append(abs(inst_count - instance_counts[i - 1]))
+
+        print(algorithm_name)
+        print('Average difference: %.2f' % statistics.mean(diffs))
+        print('Average over: %.2f' % statistics.mean(overs))
+        print('Average under: %.2f' % statistics.mean(unders))
+        print('Average scale change: %.2f' % statistics.mean(changes))
+        print()
+
         pyplot.plot(rescale_times, instance_counts,
                     label=algorithm_name, color=color, alpha=1)
 
-    pyplot.legend(loc='upper right')
+    pyplot.legend(loc='lower right')
     pyplot.show()
 
 
